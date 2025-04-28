@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
 import openai
+import os
 
 app = Flask(__name__)
 
-openai.api_key = "YOUR_OPENAI_API_KEY"  # <-- Put your OpenAI API key here
+# Hardcoded API key for now (you should replace this later for better security)
+openai.api_key = "YOUR_OPENAI_API_KEY"
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -22,4 +24,5 @@ def webhook():
     })
 
 if __name__ == '__main__':
-    app.run()
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
