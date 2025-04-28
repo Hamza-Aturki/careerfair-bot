@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-# Hardcoded API key for now (you should replace this later for better security)
+# Hardcoded API key for now (you should replace it with your real API key later)
 openai.api_key = "YOUR_OPENAI_API_KEY"
 
 @app.route('/webhook', methods=['POST'])
