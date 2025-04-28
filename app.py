@@ -1,23 +1,25 @@
 from flask import Flask, request, jsonify
-import openai
+import requests
 import os
 
 app = Flask(__name__)
 
-# Hardcoded API key for now (you should replace it with your real API key later)
-openai.api_key = "YOUR_OPENAI_API_KEY"
+# Updated user's real DeepAI API Key
+DEEPAI_API_KEY = "7c7e8e85-4c1f-45ef-b859-0b5e56b19afe"
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json()
     user_message = req['queryResult']['queryText']
 
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": user_message}]
+    response = requests.post(
+        "https://api.deepai.org/api/text-generator",
+        data={'text': user_message},
+        headers={'api-key': DEEPAI_API_KEY}
     )
 
-    chatbot_reply = response['choices'][0]['message']['content']
+    response_json = response.json()
+    chatbot_reply = response_json.get('output', "Sorry, I couldn't understand that.")
 
     return jsonify({
         'fulfillmentText': chatbot_reply
